@@ -45,10 +45,18 @@ class MainActivity : ComponentActivity() {
 fun MainActivityContent(){
     val celsius = remember { mutableIntStateOf(0) }
     val newCelsius = remember { mutableStateOf("") }
-    Column(modifier = Modifier.padding(16.dp).fillMaxWidth()){
+    Column(modifier = Modifier
+        .padding(16.dp)
+        .fillMaxWidth()){
         Header(R.drawable.sunrise, "sunrise image" )
         EnterTemperature(newCelsius.value){newCelsius.value = it }
-        Row(modifier =  Modifier.fillMaxWidth().padding(0.dp, 16.dp,0.dp, 16.dp ),
+        //EnterTemperature(newCelsius.value){it -> newCelsius.value = it }
+        // it thay mat cho tham so (String) trong (String) -> Unit)
+        // newCelsius.value = it la Unit, la 1 doan code ko tra lai gia tri, chi thuc hien
+        //EnterTemperature(temperature : String, changed: (String) -> Unit) {
+        Row(modifier = Modifier
+            .fillMaxWidth()
+            .padding(0.dp, 16.dp, 0.dp, 16.dp),
             horizontalArrangement = Arrangement.Start) {
             ConvertButton {
                 // tam thoi vi du bam vao nut Convert thi doi gia tri
@@ -92,6 +100,12 @@ fun TemperatureText(celsius: Int) {
 
 @Composable
 fun EnterTemperature(temperature : String, changed: (String) -> Unit) {
+    // (String) -> Unit nghia la 1 ham co tham so kieu String, ham chi thuc hien
+    // khong tra lai gia tri
+    // Loi goi EnterTemperature(newCelsius.value){newCelsius.value = it }
+    // newCelsius.value = it, thuc hien viec gan tham so cho newCelsius.value
+    // vi dinh nghia ham (String) -> Unit chi co 1 tham so, nen dung it
+    // vao luc goi ham duoc. it dai dien cho
     TextField(
         value = temperature,
         label = {Text("Enter a temperature")},
